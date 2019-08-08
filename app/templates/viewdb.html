@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>User: {{ current_user.username }}</h1>
+	<hr>
+	<h2>Games</h2>
+	{% for game in games %}
+	<p> {{game.game_pk}}: {{ game.date }} | {{ game.away_team }} {{ game.away_score }} @ {{ game.home_team }} {{ game.home_score }}</p>
+	{% endfor %}
+	<hr>
+	<h2>Batters</h2>
+	{% for batter in batters %}
+	<p> {{ batter.batter_id }} @ {{ batter.game_pk }} </p>
+	{% endfor %}
+	<hr>
+	<h2>Pitchers</h2>
+	{% for pitcher in pitchers %}
+	<p> {{ pitcher.pitcher_id }} @ {{ pitcher.game_pk }} </p>
+	{% endfor %}
+	<hr>
+	<h2>Players</h2>
+	{% for player in players %}
+	<p> {{ player.id }} | {{ player.name }} </p>
+	{% endfor %}
+	
+{% endblock %}

@@ -1,0 +1,5 @@
+todo:
+	FORMATTING EVERYWHERE
+	Documentation
+	refactor mlb api functions to separate module
+	jquery sortable tables

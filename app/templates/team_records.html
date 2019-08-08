@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<table>
+	<tr>
+		<th>Team</th>
+		<th>W</th>
+		<th>L</th>
+		<th>W%</th>
+		<th>RS</th>
+		<th>RA</th>
+	</tr>
+	{% for name, team in teams.items() %}
+	<tr>
+		<td>{{ name }}</td>
+		<td>{{ team['wins'] }}</td>
+		<td>{{ team['losses'] }}</td>
+		<td>{{ team['wpct'] }}</td>
+		<td>{{ team['rs'] }}</td>
+		<td>{{ team['ra'] }}</td>
+	</tr>
+	{% endfor %}
+</table>
+
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Select Game</h1>
+	{% if games %}
+	{% for game in games %}
+	<div><p><a href="{{ url_for('add_game', game_pk=game[0], date=date) }}">{{game[0]}}</a>: {{game[1]}}</p></div>
+	{% endfor %}
+	{% else %}
+	<div><p>No games found</p></div>
+	{% endif %}
+{% endblock %}

@@ -1,0 +1,48 @@
+<html>
+    <head>
+        {% if title %}
+        <title>{{ title }}</title>
+        {% else %}
+        <title>MyGames</title>
+        {% endif %}
+		<style>
+			table {
+				border-collapse: collapse;
+			}
+			table, th, td {
+				border: 1px solid black;
+			}
+			th, td {
+				padding: 2px;
+			}
+		</style>
+    </head>
+    <body>
+        <div>
+            MyGames:
+            <a href="{{ url_for('index') }}">Home</a>
+			{% if current_user.is_anonymous %}
+            <a href="{{ url_for('login') }}">Login</a>
+			{% else %}
+			<a href="{{ url_for('batter_stats') }}">Batting Stats</a>
+			<a href="{{ url_for('pitcher_stats') }}">Pitching Stats</a>
+			<a href="{{ url_for('team_records') }}">Team Records</a>
+			<a href="{{ url_for('choose_date') }}">Add Date</a>
+			<a href="{{ url_for('list_games') }}">My Games</a>
+			<a href="{{ url_for('logout') }}">Logout</a>
+			{% endif %}
+			
+        </div>
+        <hr>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </body>
+</html>

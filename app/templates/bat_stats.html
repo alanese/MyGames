@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<table>
+	<tr>
+		<th>Name</th>
+		<th>G</th>
+		<th>AB</th>
+		<th>R</th>
+		<th>H</th>
+		<th>2B</th>
+		<th>3B</th>
+		<th>HR</th>
+		<th>RBI</th>
+		<th>SB</th>
+		<th>CS</th>
+		<th>SO</th>
+		<th>BB</th>
+		<th>HBP</th>
+		<th>SF</th>
+		<th>BA</th>
+		<th>OBP</th>
+		<th>SLG</th>
+		<th>OPS</th>
+	</tr>
+	{% for player in players %}
+	<tr>
+		<td>{{ player['name'] }}</td>
+		<td>{{ player['g'] }}</td>
+		<td>{{ player['ab'] }}</td>
+		<td>{{ player['r'] }}</td>
+		<td>{{ player['h'] }}</td>
+		<td>{{ player['2b'] }}</td>
+		<td>{{ player['3b'] }}</td>
+		<td>{{ player['hr'] }}</td>
+		<td>{{ player['rbi'] }}</td>
+		<td>{{ player['sb'] }}</td>
+		<td>{{ player['cs'] }}</td>
+		<td>{{ player['so'] }}</td>
+		<td>{{ player['bb'] }}</td>
+		<td>{{ player['hbp'] }}</td>
+		<td>{{ player['sf'] }}</td>
+		<td>{{ player['ba'] }}</td>
+		<td>{{ player['obp'] }}</td>
+		<td>{{ player['slg'] }}</td>
+		<td>{{ player['ops'] }}</td>
+	</tr>
+	{% endfor %}
+</table>
+{% endblock %}

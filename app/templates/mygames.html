@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>User: {{ current_user.username }}</h1>
+	<hr>
+	{% if games.count() > 0 %}
+	{% for game in games %}
+	<p> {{ game.game_pk }}: {{ game.date }} | {{ game.game_result }} (<a href="{{ url_for('rm_game', game_pk=game.game_pk) }}">remove</a>)</p>
+	{% endfor %}
+	{% else %}
+	<p>No Games Found</p>
+	{% endif %}
+{% endblock %}
