@@ -2,41 +2,45 @@
 
 {% block content %}
 <table>
-	<tr>
-		<th>Name</th>
-		<th>W</th>
-		<th>L</th>
-		<th>G</th>
-		<th>GS</th>
-		<th>GF</th>
-		<th>SV</th>
-		<th>IP</th>
-		<th>H</th>
-		<th>R</th>
-		<th>ER</th>
-		<th>HR</th>
-		<th>BB</th>
-		<th>SO</th>
-		<th>ERA</th>
-	</tr>
-	{% for player in players %}
-	<tr>
-		<td>{{ player['name'] }}</td>
-		<td>{{ player['w'] }}</td>
-		<td>{{ player['losses'] }}</td>
-		<td>{{ player['g'] }}</td>
-		<td>{{ player['gs'] }}</td>
-		<td>{{ player['gf'] }}</td>
-		<td>{{ player['sv'] }}</td>
-		<td>{{ player['ip'] }}</td>
-		<td>{{ player['h'] }}</td>
-		<td>{{ player['r'] }}</td>
-		<td>{{ player['er'] }}</td>
-		<td>{{ player['hr'] }}</td>
-		<td>{{ player['bb'] }}</td>
-		<td>{{ player['so'] }}</td>
-		<td>{{ player['era'] }}</td>
-	</tr>
-	{% endfor %}
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>W</th>
+			<th>L</th>
+			<th>G</th>
+			<th>GS</th>
+			<th>GF</th>
+			<th>SV</th>
+			<th>IP</th>
+			<th>H</th>
+			<th>R</th>
+			<th>ER</th>
+			<th>HR</th>
+			<th>BB</th>
+			<th>SO</th>
+			<th>ERA</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for player in players %}
+		<tr>
+			<td>{{ player['name'] }}</td>
+			<td>{{ player['w'] }}</td>
+			<td>{{ player['losses'] }}</td>
+			<td>{{ player['g'] }}</td>
+			<td>{{ player['gs'] }}</td>
+			<td>{{ player['gf'] }}</td>
+			<td>{{ player['sv'] }}</td>
+			<td>{{ player['ip'] }}</td>
+			<td>{{ player['h'] }}</td>
+			<td>{{ player['r'] }}</td>
+			<td>{{ player['er'] }}</td>
+			<td>{{ player['hr'] }}</td>
+			<td>{{ player['bb'] }}</td>
+			<td>{{ player['so'] }}</td>
+			<td>{{ player['era'] }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
 </table>
 {% endblock %}
