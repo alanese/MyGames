@@ -1,7 +1,7 @@
-{% extends "base.html" %}
+{% extends "sort_table.html" %}
 
-{% block content %}
-<table>
+{% block app_content %}
+<table id="sorttable" class="tablesorter-bootstrap">
 	<thead>
 		<tr>
 			<th>Name</th>
@@ -51,10 +51,4 @@
 		{% endfor %}
 	</tbody>
 </table>
-
-<script>
-	$(function() {
-	  $("#pitch").tablesorter();
-	});
-</script>
 {% endblock %}
