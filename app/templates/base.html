@@ -1,40 +1,64 @@
-<html>
-    <head>
-        {% if title %}
-        <title>{{ title }}</title>
-        {% else %}
-        <title>MyGames</title>
-        {% endif %}
-		<link rel='stylesheet' href="{{ url_for('static', filename='css/theme.default.min.css') }}">
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-		<script type="text/javascript" src="{{ url_for('static', filename='scripts/jquery.tablesorter.min.js') }}"></script>
-    </head>
-    <body>
-        <div>
-            MyGames:
-            <a href="{{ url_for('index') }}">Home</a>
-			{% if current_user.is_anonymous %}
-            <a href="{{ url_for('login') }}">Login</a>
-			{% else %}
-			<a href="{{ url_for('batter_stats') }}">Batting Stats</a>
-			<a href="{{ url_for('pitcher_stats') }}">Pitching Stats</a>
-			<a href="{{ url_for('team_records') }}">Team Records</a>
-			<a href="{{ url_for('choose_date') }}">Add Date</a>
-			<a href="{{ url_for('list_games') }}">My Games</a>
-			<a href="{{ url_for('logout') }}">Logout</a>
-			{% endif %}
-			
+{% extends 'bootstrap/base.html' %}
+
+{% block title %}
+    {% if title %}{{ title }} - MyGames{% else %}MyGames{% endif %}
+{% endblock %}
+
+{% block styles %}
+	{{ super() }}
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/theme.bootstrap_3.css') }}">
+{% endblock %}
+
+{% block scripts %}
+	{{ super() }}
+	<script type="text/javascript" src="{{ url_for('static', filename='scripts/jquery.tablesorter.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='scripts/jquery.tablesorter.widgets.js') }}"></script>
+{% endblock %}
+
+{% block navbar %}
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ url_for('index') }}">MyGames</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ url_for('index') }}">Home</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if current_user.is_anonymous %}
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                    {% else %}
+                    <li><a href="{{ url_for('batter_stats') }}">Batting</a></li>
+					<li><a href="{{ url_for('pitcher_stats') }}">Pitching</a></li>
+					<li><a href="{{ url_for('team_records') }}">Team Stats</a></li>
+					<li><a href="{{ url_for('list_games') }}">My Games</a></li>
+					<li><a href="{{ url_for('choose_date') }}">Add Game</a></li>
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
-        <hr>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
         {% with messages = get_flashed_messages() %}
         {% if messages %}
-        <ul>
             {% for message in messages %}
-            <li>{{ message }}</li>
+            <div class="alert alert-info" role="alert">{{ message }}</div>
             {% endfor %}
-        </ul>
         {% endif %}
         {% endwith %}
-        {% block content %}{% endblock %}
-    </body>
-</html>
+
+        {# application content needs to be provided in the app_content block #}
+        {% block app_content %}{% endblock %}
+    </div>
+{% endblock %}
