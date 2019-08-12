@@ -5,17 +5,9 @@
         {% else %}
         <title>MyGames</title>
         {% endif %}
-		<style>
-			table {
-				border-collapse: collapse;
-			}
-			table, th, td {
-				border: 1px solid black;
-			}
-			th, td {
-				padding: 2px;
-			}
-		</style>
+		<link rel='stylesheet' href="{{ url_for('static', filename='css/theme.default.min.css') }}">
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='scripts/jquery.tablesorter.min.js') }}"></script>
     </head>
     <body>
         <div>

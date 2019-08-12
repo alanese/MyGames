@@ -1,5 +1,5 @@
 todo:
 	FORMATTING EVERYWHERE
+		-Make those sortable tables look nicer
 	Documentation
 	refactor mlb api functions to separate module
-	jquery sortable tables

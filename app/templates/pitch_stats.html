@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<table>
+<table id="pitch" class="tablesorter">
 	<thead>
 		<tr>
 			<th>Name</th>
@@ -43,4 +43,10 @@
 		{% endfor %}
 	</tbody>
 </table>
+
+<script>
+	$(function() {
+	  $("#pitch").tablesorter();
+	});
+</script>
 {% endblock %}
