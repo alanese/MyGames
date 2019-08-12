@@ -5,6 +5,7 @@ Currently the site only works for games with sufficient box score data available
 
 ## Required packages
 - Flask
+- Flask-Bootstrap
 - Flask-Login
 - Flask-Migrate
 - Flask-SQLAlchemy
