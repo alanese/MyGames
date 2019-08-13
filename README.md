@@ -14,6 +14,7 @@ The database in the repository has a single registered user `admin` with passwor
 - Flask-Migrate
 - Flask-SQLAlchemy
 - Flask-WTForms
+- python-dotenv
 - Requests
 - Werkzeug
 - WTForms
