@@ -168,8 +168,10 @@ def batter_stats():
 		player_record = PlayerData.query.filter_by(id=id).first()
 		if player_record is not None:
 			batters[id]['name'] = player_record.name
+			batters[id]['sortname'] = player_record.sort_name
 		else:
 			batters[id]['name'] = "???"
+			batters[id]['sortname'] = "???"
 	
 	return render_template('bat_stats.html', players=batters.items())
 	
@@ -208,8 +210,10 @@ def pitcher_stats():
 		player_record = PlayerData.query.filter_by(id=id).first()
 		if player_record is not None:
 			pitchers[id]['name'] = player_record.name
+			pitchers[id]['sortname'] = player_record.sort_name
 		else:
 			pitchers[id]['name'] = "???"
+			pitchers[id]['sortname'] = "???"
 	
 	return render_template("pitch_stats.html", players=pitchers.items())
 	

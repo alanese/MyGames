@@ -28,7 +28,7 @@
 	<tbody>
 		{% for player in players %}
 		<tr>
-			<td>
+			<td data-value="{{ player[1]['sortname'] }}">
 				<a href="{{ url_for('batter_games', player_id=player[0]) }}">
 					{{ player[1]['name'] }}
 				</a>
