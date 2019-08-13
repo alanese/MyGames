@@ -5,8 +5,6 @@ Currently the site only works for games with sufficient box score data available
 
 The database in the repository has one registered user `admin` with password `admin`.
 
-The database in the repository has a single registered user `admin` with password `admin`
-
 ## Required packages
 - Flask
 - Flask-Bootstrap
