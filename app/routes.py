@@ -59,19 +59,18 @@ def register():
 def choose_date():
 	form = DateForm()
 	if form.validate_on_submit():
-		return redirect(url_for('game_select', datestr=form.dt.data.strftime('%m-%d-%Y')))
+		return redirect(url_for('game_select', year=form.dt.data.year, month=form.dt.data.month, day=form.dt.data.day))
 	return render_template('choosedate.html', form=form)
 
-@app.route('/gameselect/<datestr>', methods=['GET', 'POST'])
+@app.route('/gameselect/<year>/<month>/<day>', methods=['GET', 'POST'])
 @login_required
-def game_select(datestr):
-	games = get_games(datestr[0:2] + '/' + datestr[3:5] + '/' + datestr[6:])
+def game_select(year, month, day):
+	games = get_games(month + '/' + day + '/' + year)
 	if len(games) == 0:
-		#return render_template('gameselect.html')
-		flash("No games found for {}".format(datestr))
+		flash("No games found for {}-{}-{}".format(year, month.zfill(2), day.zfill(2)))
 		return redirect(url_for('choose_date'))
 	else:
-		return render_template('gameselect.html', games=games, date=datestr)
+		return render_template('gameselect.html', games=games, date="{}-{}-{}".format(year, month.zfill(2), day.zfill(2)))
 		
 @app.route('/mygames')
 @login_required
@@ -387,6 +386,7 @@ def add_player_to_db(id):
 		return True
 	else:
 		return False
-		
+
+#Convert an integer number of outs to a string representation of innings pitched
 def outs_to_ip(outs):
 	return str(int(outs/3)) + '.' + str(outs % 3)
