@@ -3,3 +3,4 @@ todo:
 		-Make those sortable tables look nicer
 	Documentation
 	refactor mlb api functions to separate module
+	Find good data source for pre-2002 games

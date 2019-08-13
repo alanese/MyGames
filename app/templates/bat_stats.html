@@ -28,25 +28,29 @@
 	<tbody>
 		{% for player in players %}
 		<tr>
-			<td>{{ player['name'] }}</td>
-			<td>{{ player['g'] }}</td>
-			<td>{{ player['ab'] }}</td>
-			<td>{{ player['r'] }}</td>
-			<td>{{ player['h'] }}</td>
-			<td>{{ player['2b'] }}</td>
-			<td>{{ player['3b'] }}</td>
-			<td>{{ player['hr'] }}</td>
-			<td>{{ player['rbi'] }}</td>
-			<td>{{ player['sb'] }}</td>
-			<td>{{ player['cs'] }}</td>
-			<td>{{ player['so'] }}</td>
-			<td>{{ player['bb'] }}</td>
-			<td>{{ player['hbp'] }}</td>
-			<td>{{ player['sf'] }}</td>
-			<td>{{ player['ba'] }}</td>
-			<td>{{ player['obp'] }}</td>
-			<td>{{ player['slg'] }}</td>
-			<td>{{ player['ops'] }}</td>
+			<td>
+				<a href="{{ url_for('batter_games', player_id=player[0]) }}">
+					{{ player[1]['name'] }}
+				</a>
+			</td>
+			<td>{{ player[1]['g'] }}</td>
+			<td>{{ player[1]['ab'] }}</td>
+			<td>{{ player[1]['r'] }}</td>
+			<td>{{ player[1]['h'] }}</td>
+			<td>{{ player[1]['2b'] }}</td>
+			<td>{{ player[1]['3b'] }}</td>
+			<td>{{ player[1]['hr'] }}</td>
+			<td>{{ player[1]['rbi'] }}</td>
+			<td>{{ player[1]['sb'] }}</td>
+			<td>{{ player[1]['cs'] }}</td>
+			<td>{{ player[1]['so'] }}</td>
+			<td>{{ player[1]['bb'] }}</td>
+			<td>{{ player[1]['hbp'] }}</td>
+			<td>{{ player[1]['sf'] }}</td>
+			<td>{{ player[1]['ba'] }}</td>
+			<td>{{ player[1]['obp'] }}</td>
+			<td>{{ player[1]['slg'] }}</td>
+			<td>{{ player[1]['ops'] }}</td>
 		</tr>
 		{% endfor %}
 	</tbody>

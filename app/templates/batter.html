@@ -1,0 +1,45 @@
+{% extends "sort_table.html" %}
+
+{% block app_content %}
+<h1>{{ name }}</h1>
+<table id="sorttable" class="tablesorter-bootstrap">
+	<thead>
+		<tr>
+			<th>Date</th>
+			<th>AB</th>
+			<th>R</th>
+			<th>H</th>
+			<th>2B</th>
+			<th>3B</th>
+			<th>HR</th>
+			<th>RBI</th>
+			<th>SB</th>
+			<th>CS</th>
+			<th>SO</th>
+			<th>BB</th>
+			<th>HBP</th>
+			<th>SF</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for row in rows %}
+		<tr>
+			<td>{{ row[0]['date'] }}</td>
+			<td>{{ row[1]['ab'] }}</td>
+			<td>{{ row[1]['r'] }}</td>
+			<td>{{ row[1]['h'] }}</td>
+			<td>{{ row[1]['doubles'] }}</td>
+			<td>{{ row[1]['triples'] }}</td>
+			<td>{{ row[1]['hr'] }}</td>
+			<td>{{ row[1]['rbi'] }}</td>
+			<td>{{ row[1]['sb'] }}</td>
+			<td>{{ row[1]['cs'] }}</td>
+			<td>{{ row[1]['k'] }}</td>
+			<td>{{ row[1]['bb'] }}</td>
+			<td>{{ row[1]['hbp'] }}</td>
+			<td>{{ row[1]['sf'] }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock %}

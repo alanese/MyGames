@@ -171,7 +171,7 @@ def batter_stats():
 		else:
 			batters[id]['name'] = "???"
 	
-	return render_template('bat_stats.html', players=batters.values())
+	return render_template('bat_stats.html', players=batters.items())
 	
 @app.route('/pitcherstats')
 @login_required
@@ -211,7 +211,7 @@ def pitcher_stats():
 		else:
 			pitchers[id]['name'] = "???"
 	
-	return render_template("pitch_stats.html", players=pitchers.values())
+	return render_template("pitch_stats.html", players=pitchers.items())
 	
 @app.route('/teamrecords')
 @login_required
@@ -245,6 +245,29 @@ def team_records():
 		wpct = teams[name]['wins'] / (teams[name]['wins'] + teams[name]['losses'])
 		teams[name]['wpct'] = "{:.3f}".format(wpct)
 	return render_template("team_records.html", teams=teams)
+	
+@app.route('/batter/<player_id>')
+@login_required
+def batter_games(player_id):
+	name = PlayerData.query.filter(PlayerData.id==player_id).first().name
+	q = db.session.query(Game, BatGame).\
+				   filter(Game.game_pk==BatGame.game_pk).\
+				   filter(Game.user_id==current_user.id).\
+				   filter(BatGame.batter_id==player_id).\
+				   all()
+	return render_template("batter.html", name=name, rows=q)
+	
+@app.route('/pitcher/<player_id>')
+@login_required
+def pitcher_games(player_id):
+	name = PlayerData.query.filter(PlayerData.id==player_id).first().name
+	q = db.session.query(Game, PitchGame).\
+				   filter(Game.game_pk==PitchGame.game_pk).\
+				   filter(Game.user_id==current_user.id).\
+				   filter(PitchGame.pitcher_id==player_id).\
+				   all()
+	rows = [ (g, pg, outs_to_ip(pg.outs)) for (g, pg) in q ]			   
+	return render_template("pitcher.html", name=name, rows=rows)
 			
 @app.route('/viewdb')	
 def viewdb():
@@ -360,3 +383,6 @@ def add_player_to_db(id):
 		return True
 	else:
 		return False
+		
+def outs_to_ip(outs):
+	return str(int(outs/3)) + '.' + str(outs % 3)

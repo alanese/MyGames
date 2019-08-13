@@ -4,17 +4,6 @@
     {% if title %}{{ title }} - MyGames{% else %}MyGames{% endif %}
 {% endblock %}
 
-{% block styles %}
-	{{ super() }}
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/theme.bootstrap_3.css') }}">
-{% endblock %}
-
-{% block scripts %}
-	{{ super() }}
-	<script type="text/javascript" src="{{ url_for('static', filename='scripts/jquery.tablesorter.min.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='scripts/jquery.tablesorter.widgets.js') }}"></script>
-{% endblock %}
-
 {% block navbar %}
     <nav class="navbar navbar-default">
         <div class="container">
