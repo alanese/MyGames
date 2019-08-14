@@ -20,8 +20,6 @@ class User(UserMixin, db.Model):
 class Game(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	game_pk = db.Column(db.Integer, db.ForeignKey('game_data.game_pk'), index=True)
-	game_result = db.Column(db.String(64))
-	date = db.Column(db.String(10))
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 	
 class GameData(db.Model):

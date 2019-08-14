@@ -75,7 +75,12 @@ def game_select(year, month, day):
 @app.route('/mygames')
 @login_required
 def list_games():
-	games = Game.query.filter_by(user_id=current_user.id).order_by(Game.game_pk)
+	games = db.session.query(Game, GameData).\
+					   filter(Game.user_id==current_user.id).\
+					   filter(GameData.game_pk==Game.game_pk).\
+					   order_by(Game.game_pk).\
+					   all()
+	#games = Game.query.filter_by(user_id=current_user.id).order_by(Game.game_pk)
 	return render_template('mygames.html', games=games)
 
 box_url = "http://statsapi.mlb.com/api/v1/game/{}/boxscore"
@@ -84,11 +89,7 @@ box_url = "http://statsapi.mlb.com/api/v1/game/{}/boxscore"
 def add_game(game_pk, date):
 	r = requests.get(box_url.format(game_pk))
 	r = r.json()
-	desc = "{} {} @ {} {}".format(r['teams']['away']['team']['name'],
-								  r['teams']['away']['teamStats']['batting']['runs'],
-								  r['teams']['home']['team']['name'],
-								  r['teams']['home']['teamStats']['batting']['runs'])
-	game = Game(game_pk=game_pk, game_result=desc, user_id=current_user.id, date=date)
+	game = Game(game_pk=game_pk, user_id=current_user.id)
 	check_game = GameData.query.filter_by(game_pk=game_pk).first()
 	if check_game is None:
 		game_data = GameData(game_pk=game_pk, date=date,
@@ -256,11 +257,12 @@ def team_records():
 @login_required
 def batter_games(player_id):
 	name = PlayerData.query.filter(PlayerData.id==player_id).first().name
-	q = db.session.query(Game, BatGame).\
+	q = db.session.query(Game, BatGame, GameData).\
 				   filter(Game.game_pk==BatGame.game_pk).\
+				   filter(Game.game_pk==GameData.game_pk).\
 				   filter(Game.user_id==current_user.id).\
 				   filter(BatGame.batter_id==player_id).\
-				   order_by(Game.date).\
+				   order_by(GameData.date).\
 				   all()
 	return render_template("batter.html", name=name, rows=q)
 	
@@ -268,13 +270,14 @@ def batter_games(player_id):
 @login_required
 def pitcher_games(player_id):
 	name = PlayerData.query.filter(PlayerData.id==player_id).first().name
-	q = db.session.query(Game, PitchGame).\
+	q = db.session.query(Game, PitchGame, GameData).\
 				   filter(Game.game_pk==PitchGame.game_pk).\
+				   filter(Game.game_pk==GameData.game_pk).\
 				   filter(Game.user_id==current_user.id).\
 				   filter(PitchGame.pitcher_id==player_id).\
-				   order_by(Game.date).\
+				   order_by(GameData.date).\
 				   all()
-	rows = [ (g, pg, outs_to_ip(pg.outs)) for (g, pg) in q ]			   
+	rows = [ (g, pg, gd, outs_to_ip(pg.outs)) for (g, pg, gd) in q ]			   
 	return render_template("pitcher.html", name=name, rows=rows)
 			
 @app.route('/viewdb')	

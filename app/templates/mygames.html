@@ -3,9 +3,9 @@
 {% block app_content %}
     <h1>User: {{ current_user.username }}</h1>
 	<hr>
-	{% if games.count() > 0 %}
-	{% for game in games %}
-	<p> {{ game.game_pk }}: {{ game.date }} | {{ game.game_result }} (<a href="{{ url_for('rm_game', game_pk=game.game_pk) }}">remove</a>)</p>
+	{% if games|length > 0 %}
+	{% for g, gd in games %}
+	<p> {{ g.game_pk }}: {{ gd.date }} | {{ gd.away_team }} {{ gd.away_score }} @ {{ gd.home_team }} {{ gd.home_score }} (<a href="{{ url_for('rm_game', game_pk=g.game_pk) }}">remove</a>)</p>
 	{% endfor %}
 	{% else %}
 	<p>No Games Found</p>
