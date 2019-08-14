@@ -22,6 +22,7 @@ The database in the repository has one registered user `admin` with password `ad
 - Refactor MLB API code to separate module
 - Handle variations in team names
 - Add team ID to BatGame, PitchGame tables
+- Figure out how to handle pre-2002 games
 - Documentation
 - Other stuff I think of?
 
