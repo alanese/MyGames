@@ -8,13 +8,13 @@
 			<th>Team</th>
 			<th>W</th>
 			<th>L</th>
-			<th>W%</th>
+			<th data-sorted="true" data-sorted-direction="descending">W%</th>
 			<th>RS</th>
 			<th>RA</th>
 		</tr>
 	</thead>
 	<tbody>
-		{% for name, team in teams.items() %}
+		{% for name, team in teams %}
 		<tr>
 			<td>{{ name }}</td>
 			<td>{{ team['wins'] }}</td>

@@ -171,8 +171,9 @@ def batter_stats():
 		else:
 			batters[id]['name'] = "???"
 			batters[id]['sortname'] = "???"
-	
-	return render_template('bat_stats.html', players=batters.items())
+
+	players = sorted(batters.items(), key=lambda x: x[1]['sortname'])
+	return render_template('bat_stats.html', players=players)
 	
 @app.route('/pitcherstats')
 @login_required
@@ -213,8 +214,9 @@ def pitcher_stats():
 		else:
 			pitchers[id]['name'] = "???"
 			pitchers[id]['sortname'] = "???"
-	
-	return render_template("pitch_stats.html", players=pitchers.items())
+			
+	players = sorted(pitchers.items(), key=lambda x: x[1]['sortname'])
+	return render_template("pitch_stats.html", players=players)
 	
 @app.route('/teamrecords')
 @login_required
@@ -247,6 +249,7 @@ def team_records():
 	for name in teams.keys():
 		wpct = teams[name]['wins'] / (teams[name]['wins'] + teams[name]['losses'])
 		teams[name]['wpct'] = "{:.3f}".format(wpct)
+	teams = sorted(teams.items(), key=lambda x: x[1]['wpct'], reverse=True)
 	return render_template("team_records.html", teams=teams)
 	
 @app.route('/batter/<player_id>')
@@ -257,6 +260,7 @@ def batter_games(player_id):
 				   filter(Game.game_pk==BatGame.game_pk).\
 				   filter(Game.user_id==current_user.id).\
 				   filter(BatGame.batter_id==player_id).\
+				   order_by(Game.date).\
 				   all()
 	return render_template("batter.html", name=name, rows=q)
 	
@@ -268,6 +272,7 @@ def pitcher_games(player_id):
 				   filter(Game.game_pk==PitchGame.game_pk).\
 				   filter(Game.user_id==current_user.id).\
 				   filter(PitchGame.pitcher_id==player_id).\
+				   order_by(Game.date).\
 				   all()
 	rows = [ (g, pg, outs_to_ip(pg.outs)) for (g, pg) in q ]			   
 	return render_template("pitcher.html", name=name, rows=rows)
