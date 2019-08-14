@@ -29,6 +29,12 @@ class GameData(db.Model):
 	home_score = db.Column(db.Integer)
 	away_team = db.Column(db.String(32), index=True)
 	away_score = db.Column(db.Integer)
+	
+	def result(self):
+		return "{} {} @ {} {}".format(self.away_team,
+									  self.away_score,
+									  self.home_team,
+									  self.home_score)
 
 class PlayerData(db.Model):
 	id = db.Column(db.Integer, primary_key=True)

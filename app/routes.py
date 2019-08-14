@@ -5,8 +5,10 @@ from werkzeug.urls import url_parse
 from app import app, db
 from app.forms import LoginForm, DateForm, RegistrationForm
 from app.models import User, Game, GameData, PlayerData, BatGame, PitchGame
-from collections import defaultdict
+import app.mlbapi as mlbapi
 import requests
+from collections import defaultdict
+import datetime as dt
 
 @app.route('/')
 @app.route('/index')
@@ -65,12 +67,13 @@ def choose_date():
 @app.route('/gameselect/<year>/<month>/<day>', methods=['GET', 'POST'])
 @login_required
 def game_select(year, month, day):
-	games = get_games(month + '/' + day + '/' + year)
+	date = dt.date(int(year), int(month), int(day))
+	games = mlbapi.get_schedule(date)
 	if len(games) == 0:
-		flash("No games found for {}-{}-{}".format(year, month.zfill(2), day.zfill(2)))
+		flash("No games found for {}".format(date.isoformat()))
 		return redirect(url_for('choose_date'))
 	else:
-		return render_template('gameselect.html', games=games, date="{}-{}-{}".format(year, month.zfill(2), day.zfill(2)))
+		return render_template('gameselect.html', games=games)
 		
 @app.route('/mygames')
 @login_required
@@ -286,24 +289,6 @@ def viewdb():
 										  batters=BatGame.query.all(),
 										  pitchers=PitchGame.query.all(),
 										  players=PlayerData.query.all())
-	
-
-
-#Return a dict of games for date in MM/DD/YYYY format
-schedule_url_root = 'http://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&date='
-def get_games(datestr):
-	r = requests.get(schedule_url_root + datestr)
-	r = r.json()
-	if len(r['dates']) == 0:
-		return {}
-	else:
-		
-		scores = [ (x['gamePk'], '{0} {1} @ {2} {3}'.format(
-								  x['teams']['away']['team']['name'],
-								  x['teams']['away']['score'],
-								  x['teams']['home']['team']['name'],
-								  x['teams']['home']['score'])) for x in r['dates'][0]['games'] if x['status']['codedGameState'] == 'F']
-		return scores
 		
 batting_stats = ['G', 'AB', 'R', 'H',
 				 '2B', '3B', 'HR', 'RBI',
