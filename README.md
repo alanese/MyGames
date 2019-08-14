@@ -17,5 +17,14 @@ The database in the repository has one registered user `admin` with password `ad
 - Werkzeug
 - WTForms
 
+## TODO
+- Formatting, formatting everywhere.
+- Refactor MLB API code to separate module
+- Handle variations in team names
+- Add team ID to BatGame, PitchGame tables
+- Remove redundant date, result columns from Game table
+- Documentation
+- Other stuff I think of?
+
 ## Notes
 Table sorting with [Sortable](https://github.com/HubSpot/sortable)
