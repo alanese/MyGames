@@ -136,7 +136,7 @@ def get_player(id):
 	if not (r.status_code == requests.codes.ok):
 		return None
 	r = r.json()
-	if ("people" not in r) or len(r["people"] <= 0):
+	if ("people" not in r) or (len(r["people"]) <= 0):
 		return None
 	else:
 		player = PlayerData(id=id,

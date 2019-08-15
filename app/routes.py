@@ -283,56 +283,6 @@ def viewdb():
 										  batters=BatGame.query.all(),
 										  pitchers=PitchGame.query.all(),
 										  players=PlayerData.query.all())
-		
-batting_stats = ['G', 'AB', 'R', 'H',
-				 '2B', '3B', 'HR', 'RBI',
-				 'SB', 'CS', 'K', 'BB',
-				 'HBP', 'SF']
-
-pitching_stats = ['W', 'L', 'G', 'GS', 'GF',
-				  'SV', 'H', 'R', 'ER',
-				  'HR', 'BB', 'SO']
-#Return batting and pitching player stats for the given game
-def get_game_stats(game_pk):
-	bat_stats = {}
-	pitch_stats = {}
-	box = box_url.format(game_pk)
-	r = requests.get(box).json()
-	for id, player in r['teams']['away']['players'].items():
-		if player['stats']['batting'] != {}:
-			bat_stats[int(id[2:])] = batting_from_json(player['stats']['batting'])
-		if player['stats']['pitching'] != {}:
-			pitch_stats[int(id[2:])] = pitching_from_json(player['stats']['pitching'])
-	for id, player in r['teams']['home']['players'].items():
-		if player['stats']['batting'] != {}:
-			bat_stats[int(id[2:])] = batting_from_json(player['stats']['batting'])
-		if player['stats']['pitching'] != {}:
-			pitch_stats[int(id[2:])] = pitching_from_json(player['stats']['pitching'])
-	return (bat_stats, pitch_stats)
-
-batting_stats_keys = {'atBats': 'AB', 'runs': 'R',
-					  'hits': 'H', 'doubles': '2B', 'triples': '3B',
-					  'homeRuns': 'HR', 'rbi': 'RBI', 'stolenBases': 'SB',
-					  'caughtStealing': 'CS', 'strikeOuts': 'K',
-					  'baseOnBalls': 'BB', 'hitByPitch': 'HBP',
-					  'sacFlies': 'SF'}
-def batting_from_json(stats):
-	rv = {}
-	for k, v in batting_stats_keys.items():
-		rv[v] = stats.get(k, 0)
-	return rv
-	
-pitching_stats_keys = {'wins': 'W', 'losses': 'L',
-					   'gamesStarted': 'GS', 'gamesFinished': 'GF',
-					   'saves': 'SV', 'hits': 'H', 'runs': 'R',
-					   'earnedRuns': 'ER', 'homeRuns': 'HR',
-					   'baseOnBalls': 'BB', 'strikeOuts': 'SO',
-					   'outs': 'outs'}
-def pitching_from_json(stats):
-	rv = {}
-	for k, v in pitching_stats_keys.items():
-		rv[v] = stats.get(k, 0)
-	return rv
 
 #DON'T RUN if game stats are already in the db!
 def add_game_stats_to_db(game_pk):
@@ -350,9 +300,7 @@ player_url_base = "https://statsapi.mlb.com/api/v1/people?personIds={}"
 def add_player_to_db(id):
 	prev_player = PlayerData.query.filter_by(id=id).first()
 	if not prev_player:
-		r = requests.get(player_url_base.format(id)).json()
-		new_player = PlayerData(id=id, name=r['people'][0]['fullName'],
-									   sort_name=r['people'][0]['lastFirstName'])
+		new_player=mlbapi.get_player(id)
 		db.session.add(new_player)
 		db.session.commit()
 		return True
