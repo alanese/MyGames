@@ -172,9 +172,9 @@ def viewdb():
 def add_game_stats_to_db(game_pk):
 	bat_stats, pitch_stats = mlbapi.get_game_batters_and_pitchers(game_pk)
 	for batter in bat_stats:
-		add_player_to_db(batter.batter_id)
+		dbhandler.add_player_if_missing(batter.batter_id, commit=False)
 	for pitcher in pitch_stats:
-		add_player_to_db(pitcher.pitcher_id)
+		dbhandler.add_player_if_missing(pitcher.pitcher_id, commit=False)
 	db.session.add_all(bat_stats)
 	db.session.add_all(pitch_stats)
 	db.session.commit()

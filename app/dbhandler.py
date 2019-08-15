@@ -1,5 +1,6 @@
 from app import db
 from app.models import Game, GameData, BatGame, PitchGame, PlayerData
+import app.mlbapi as mlbapi
 from collections import defaultdict
 
 def get_cum_batter_stats(user_id):
@@ -128,3 +129,14 @@ def get_cum_team_records(user_id):
 		wpct = teams[name]['wins'] / (teams[name]['wins'] + teams[name]['losses'])
 		teams[name]['wpct'] = "{:.3f}".format(wpct)
 	return teams
+
+def add_player_if_missing(id, commit=True):
+	player_record = PlayerData.query.filter_by(id=id).first()
+	if not player_record:
+		new_record = mlbapi.get_player(id)
+		db.session.add(new_record)
+		if commit:
+			db.session.commit()
+		return True
+	else:
+		return False
