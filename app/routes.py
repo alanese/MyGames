@@ -90,16 +90,10 @@ box_url = "http://statsapi.mlb.com/api/v1/game/{}/boxscore"
 @app.route('/addgame/<game_pk>/<date>', methods=['GET', 'POST'])
 @login_required
 def add_game(game_pk, date):
-	r = requests.get(box_url.format(game_pk))
-	r = r.json()
 	game = Game(game_pk=game_pk, user_id=current_user.id)
 	check_game = GameData.query.filter_by(game_pk=game_pk).first()
 	if check_game is None:
-		game_data = GameData(game_pk=game_pk, date=date,
-							 home_team=r['teams']['home']['team']['name'],
-							 home_score=r['teams']['home']['teamStats']['batting']['runs'],
-							 away_team=r['teams']['away']['team']['name'],
-							 away_score=r['teams']['away']['teamStats']['batting']['runs'])
+		game_data = mlbapi.get_game_data(game_pk, date)
 		db.session.add(game_data)
 		db.session.commit()
 		add_game_stats_to_db(game_pk)
