@@ -83,10 +83,8 @@ def list_games():
 					   filter(GameData.game_pk==Game.game_pk).\
 					   order_by(Game.game_pk).\
 					   all()
-	#games = Game.query.filter_by(user_id=current_user.id).order_by(Game.game_pk)
 	return render_template('mygames.html', games=games)
 
-box_url = "http://statsapi.mlb.com/api/v1/game/{}/boxscore"
 @app.route('/addgame/<game_pk>/<date>', methods=['GET', 'POST'])
 @login_required
 def add_game(game_pk, date):
@@ -178,18 +176,6 @@ def add_game_stats_to_db(game_pk):
 	db.session.add_all(bat_stats)
 	db.session.add_all(pitch_stats)
 	db.session.commit()
-	
-player_url_base = "https://statsapi.mlb.com/api/v1/people?personIds={}"
-#return True if player was added, False if already there
-def add_player_to_db(id):
-	prev_player = PlayerData.query.filter_by(id=id).first()
-	if not prev_player:
-		new_player=mlbapi.get_player(id)
-		db.session.add(new_player)
-		db.session.commit()
-		return True
-	else:
-		return False
 
 #Convert an integer number of outs to a string representation of innings pitched
 def outs_to_ip(outs):
