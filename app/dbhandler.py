@@ -1,10 +1,9 @@
 from app import db
-from app.models import Game, BatGame, PlayerData
-from flask_login import current_user
+from app.models import Game, BatGame, PitchGame, PlayerData
 from collections import defaultdict
 
-def get_cum_batter_stats():
-	games = Game.query.filter_by(user_id=current_user.id)
+def get_cum_batter_stats(user_id):
+	games = Game.query.filter_by(user_id=user_id)
 	pks = [ game.game_pk for game in games ]
 	batters = defaultdict(lambda: defaultdict(int))
 	for pk in pks:
@@ -59,3 +58,42 @@ def get_cum_batter_stats():
 			batters[id]['sortname'] = "???"
 
 	return batters
+
+def get_cum_pitcher_stats(user_id):
+	games = Game.query.filter_by(user_id=user_id)
+	pks = [ game.game_pk for game in games ]
+	pitchers = defaultdict(lambda: defaultdict(int))
+	for pk in pks:
+		pitch_games = PitchGame.query.filter_by(game_pk=pk)
+		for game in pitch_games:
+			id = game.pitcher_id
+			pitchers[id]['w'] = pitchers[id]['w'] + game.w
+			pitchers[id]['losses'] = pitchers[id]['losses'] + game.losses
+			pitchers[id]['g'] = pitchers[id]['g'] + 1
+			pitchers[id]['gs'] = pitchers[id]['gs'] + game.gs
+			pitchers[id]['gf'] = pitchers[id]['gf'] + game.gf
+			pitchers[id]['sv'] = pitchers[id]['sv'] + game.sv
+			pitchers[id]['outs'] = pitchers[id]['outs'] + game.outs
+			pitchers[id]['h'] = pitchers[id]['h'] + game.h
+			pitchers[id]['r'] = pitchers[id]['r'] + game.r
+			pitchers[id]['er'] = pitchers[id]['er'] + game.er
+			pitchers[id]['hr'] = pitchers[id]['hr'] + game.hr
+			pitchers[id]['bb'] = pitchers[id]['bb'] + game.bb
+			pitchers[id]['so'] = pitchers[id]['so'] + game.so
+	
+	for id in pitchers.keys():
+		pitchers[id]['ip'] = '{}.{}'.format(int(pitchers[id]['outs'] / 3),
+											pitchers[id]['outs'] % 3)
+		if pitchers[id]['outs'] == 0:
+			pitchers[id]['era'] = '-.--'
+		else:
+			era = (pitchers[id]['er'] / pitchers[id]['outs']) * 27
+			pitchers[id]['era'] = '{:.2f}'.format(era)
+		player_record = PlayerData.query.filter_by(id=id).first()
+		if player_record is not None:
+			pitchers[id]['name'] = player_record.name
+			pitchers[id]['sortname'] = player_record.sort_name
+		else:
+			pitchers[id]['name'] = "???"
+			pitchers[id]['sortname'] = "???"
+	return pitchers
