@@ -7,7 +7,6 @@ The database in the repository has one registered user `admin` with password `ad
 
 ## Required packages
 - Flask
-- Flask-Bootstrap
 - Flask-Login
 - Flask-Migrate
 - Flask-SQLAlchemy
