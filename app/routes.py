@@ -130,34 +130,7 @@ def pitcher_stats():
 @app.route('/teamrecords')
 @login_required
 def team_records():
-	games = Game.query.filter_by(user_id=current_user.id)
-	pks = [ game.game_pk for game in games ]
-	teams = defaultdict(lambda: defaultdict(int))
-	for pk in pks:
-		game_rec = GameData.query.filter_by(game_pk=pk).first()
-		if game_rec is not None:
-			h_team = game_rec.home_team
-			h_score = game_rec.home_score
-			a_team = game_rec.away_team
-			a_score = game_rec.away_score
-			
-			teams[h_team]['rs'] = teams[h_team]['rs'] + h_score
-			teams[h_team]['ra'] = teams[h_team]['ra'] + a_score
-			teams[a_team]['rs'] = teams[a_team]['rs'] + a_score
-			teams[a_team]['ra'] = teams[a_team]['ra'] + h_score
-			if h_score > a_score:
-				teams[h_team]['wins'] = teams[h_team]['wins'] + 1
-				teams[a_team]['losses'] = teams[a_team]['losses'] + 1
-			elif h_score < a_score:
-				teams[a_team]['wins'] = teams[a_team]['wins'] + 1
-				teams[h_team]['losses'] = teams[h_team]['losses'] + 1
-			else:
-				teams[h_team]['ties'] = teams[h_team]['ties'] + 1
-				teams[a_team]['ties'] = teams[a_team]['ties'] + 1
-				
-	for name in teams.keys():
-		wpct = teams[name]['wins'] / (teams[name]['wins'] + teams[name]['losses'])
-		teams[name]['wpct'] = "{:.3f}".format(wpct)
+	teams = dbhandler.get_cum_team_records(current_user.id)
 	teams = sorted(teams.items(), key=lambda x: x[1]['wpct'], reverse=True)
 	return render_template("team_records.html", teams=teams)
 	

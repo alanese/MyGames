@@ -1,5 +1,5 @@
 from app import db
-from app.models import Game, BatGame, PitchGame, PlayerData
+from app.models import Game, GameData, BatGame, PitchGame, PlayerData
 from collections import defaultdict
 
 def get_cum_batter_stats(user_id):
@@ -97,3 +97,34 @@ def get_cum_pitcher_stats(user_id):
 			pitchers[id]['name'] = "???"
 			pitchers[id]['sortname'] = "???"
 	return pitchers
+
+def get_cum_team_records(user_id):
+	games = Game.query.filter_by(user_id=user_id)
+	pks = [ game.game_pk for game in games ]
+	teams = defaultdict(lambda: defaultdict(int))
+	for pk in pks:
+		game_rec = GameData.query.filter_by(game_pk=pk).first()
+		if game_rec is not None:
+			h_team = game_rec.home_team
+			h_score = game_rec.home_score
+			a_team = game_rec.away_team
+			a_score = game_rec.away_score
+			
+			teams[h_team]['rs'] = teams[h_team]['rs'] + h_score
+			teams[h_team]['ra'] = teams[h_team]['ra'] + a_score
+			teams[a_team]['rs'] = teams[a_team]['rs'] + a_score
+			teams[a_team]['ra'] = teams[a_team]['ra'] + h_score
+			if h_score > a_score:
+				teams[h_team]['wins'] = teams[h_team]['wins'] + 1
+				teams[a_team]['losses'] = teams[a_team]['losses'] + 1
+			elif h_score < a_score:
+				teams[a_team]['wins'] = teams[a_team]['wins'] + 1
+				teams[h_team]['losses'] = teams[h_team]['losses'] + 1
+			else:
+				teams[h_team]['ties'] = teams[h_team]['ties'] + 1
+				teams[a_team]['ties'] = teams[a_team]['ties'] + 1
+				
+	for name in teams.keys():
+		wpct = teams[name]['wins'] / (teams[name]['wins'] + teams[name]['losses'])
+		teams[name]['wpct'] = "{:.3f}".format(wpct)
+	return teams
