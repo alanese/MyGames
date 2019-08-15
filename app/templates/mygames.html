@@ -23,7 +23,9 @@
 					<td>{{ gd.away_score }}</td>
 					<td>{{ gd.home_team }}</td>
 					<td>{{ gd.home_score }}</td>
-					<td><a href="{{ url_for('rm_game', game_pk=gd.game_pk) }}">Delete</a></td>
+					<td><a href="{{ url_for('rm_game', game_pk=gd.game_pk) }}">
+						<span class="iconify" data-icon="oi-circle-x" data-inline="false" style="color:red"></span>
+					</a></td>
 				</tr>
 			{% endfor %}
 		</tbody>
