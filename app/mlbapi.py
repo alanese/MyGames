@@ -56,7 +56,7 @@ def get_game_batters_and_pitchers(game_pk):
 # and the game_pk and returns a list of BatGame objects for those who batted
 def _get_batters_util(batters, game_pk):
 	b = []
-	for batter in batters:
+	for batter in batters.values():
 		if ('stats' in batter) and (len(batter['stats']['batting']) > 0):
 			bg = BatGame(game_pk=game_pk,
 						 batter_id = batter['person']['id'],
@@ -81,7 +81,7 @@ def _get_batters_util(batters, game_pk):
 # and the game_pk and returns a list of PitchGame objects for those who pitched
 def _get_pitchers_util(pitchers, game_pk):
 	p = []
-	for pitcher in pitchers:
+	for pitcher in pitchers.values():
 		if ('stats' in pitcher) and (len(pitcher['stats']['pitching']) > 0):
 			pg = PitchGame(game_pk=game_pk,
 						   pitcher_id=pitcher['person']['id'],

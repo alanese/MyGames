@@ -336,28 +336,13 @@ def pitching_from_json(stats):
 
 #DON'T RUN if game stats are already in the db!
 def add_game_stats_to_db(game_pk):
-	bat_stats, pitch_stats = get_game_stats(game_pk)
-	for id in bat_stats.keys():
-		add_player_to_db(id)
-	for id in pitch_stats.keys():
-		add_player_to_db(id)
-	for id, stats in bat_stats.items():
-		db.session.add(BatGame(game_pk=game_pk, batter_id=id,
-							   ab=stats['AB'], r=stats['R'],
-							   h=stats['H'], doubles=stats['2B'],
-							   triples=stats['3B'], hr=stats['HR'],
-							   rbi=stats['RBI'], sb=stats['SB'],
-							   cs=stats['CS'], k=stats['K'],
-							   bb=stats['BB'], hbp=stats['HBP'],
-							   sf=stats['SF']))
-	for id, stats in pitch_stats.items():
-		db.session.add(PitchGame(game_pk=game_pk, pitcher_id=id,
-								 w=stats['W'], losses=stats['L'],
-								 gs=stats['GS'], gf=stats['GF'],
-								 sv=stats['SV'], h=stats['H'],
-								 r=stats['R'], er=stats['ER'],
-								 hr=stats['HR'], bb=stats['BB'],
-								 so=stats['SO'], outs=stats['outs']))
+	bat_stats, pitch_stats = mlbapi.get_game_batters_and_pitchers(game_pk)
+	for batter in bat_stats:
+		add_player_to_db(batter.batter_id)
+	for pitcher in pitch_stats:
+		add_player_to_db(pitcher.pitcher_id)
+	db.session.add_all(bat_stats)
+	db.session.add_all(pitch_stats)
 	db.session.commit()
 	
 player_url_base = "https://statsapi.mlb.com/api/v1/people?personIds={}"
