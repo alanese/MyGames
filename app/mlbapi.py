@@ -118,12 +118,18 @@ def get_schedule(d):
 		return None
 	for game in r['dates'][0]['games']:
 		if game['status']['codedGameState'] == 'F':
+			if game['doubleHeader'] == 'Y':
+				dh_status = game['gameNumber']
+			else:
+				dh_status = 0
 			g = GameData(game_pk=game['gamePk'],
 						 date=date_str,
 						 home_team=game['teams']['home']['team']['name'],
 						 home_score=game['teams']['home']['score'],
 						 away_team=game['teams']['away']['team']['name'],
-						 away_score=game['teams']['away']['score'])
+						 away_score=game['teams']['away']['score'],
+						 dh_status=dh_status
+						 )
 			games.append(g)
 	return games
 		
