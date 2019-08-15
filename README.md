@@ -19,7 +19,7 @@ The database in the repository has one registered user `admin` with password `ad
 
 ## TODO
 - Formatting, formatting everywhere.
-- Refactor MLB API code to separate module
+- Refactor non-routing code to separate module
 - Handle variations in team names
 - Add team ID to BatGame, PitchGame tables
 - Figure out how to handle pre-2002 games
