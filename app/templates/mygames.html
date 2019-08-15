@@ -1,12 +1,33 @@
-{% extends "base.html" %}
+{% extends "sort_table.html" %}
 
 {% block app_content %}
     <h1>User: {{ current_user.username }}</h1>
 	<hr>
 	{% if games|length > 0 %}
-	{% for g, gd in games %}
-	<p> {{ g.game_pk }}: {{ gd.date }} | {{ gd.away_team }} {{ gd.away_score }} @ {{ gd.home_team }} {{ gd.home_score }} (<a href="{{ url_for('rm_game', game_pk=g.game_pk) }}">remove</a>)</p>
-	{% endfor %}
+	<table class="sortable-theme-bootstrap" data-sortable>
+		<thead>
+			<tr>
+				<th data-sortable-type="alpha">Date</th>
+				<th>Away Team</th>
+				<th>Away Score</th>
+				<th>Home Team</th>
+				<th>Home Score</th>
+				<th data-sortable="false">Delete</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for g, gd in games %}
+				<tr>
+					<td>{{ gd.date }}{% if gd.dh_status %} ({{gd.dh_status}}){% endif %}</td>
+					<td>{{ gd.away_team }}</td>
+					<td>{{ gd.away_score }}</td>
+					<td>{{ gd.home_team }}</td>
+					<td>{{ gd.home_score }}</td>
+					<td><a href="{{ url_for('rm_game', game_pk=gd.game_pk) }}">Delete</a></td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 	{% else %}
 	<p>No Games Found</p>
 	{% endif %}
