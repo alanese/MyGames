@@ -25,6 +25,7 @@ class Game(db.Model):
 class GameData(db.Model):
 	game_pk = db.Column(db.Integer, primary_key=True)
 	date = db.Column(db.String(10))
+	dh_status = db.Column(db.Integer, default=0)
 	home_team = db.Column(db.String(32), index=True)
 	home_score = db.Column(db.Integer)
 	away_team = db.Column(db.String(32), index=True)
