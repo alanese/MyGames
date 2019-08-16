@@ -47,10 +47,10 @@
 			<td>{{ player[1]['bb'] }}</td>
 			<td>{{ player[1]['hbp'] }}</td>
 			<td>{{ player[1]['sf'] }}</td>
-			<td>{{ player[1]['ba'] }}</td>
-			<td>{{ player[1]['obp'] }}</td>
-			<td>{{ player[1]['slg'] }}</td>
-			<td>{{ player[1]['ops'] }}</td>
+			<td {% if player[1]['ba'] == ".---" %} data-value="-1" {% endif %}>{{ player[1]['ba'] }}</td>
+			<td {% if player[1]['obp'] == ".---" %} data-value="-1" {% endif %}>{{ player[1]['obp'] }}</td>
+			<td {% if player[1]['slg'] == ".---" %} data-value="-1" {% endif %}>{{ player[1]['slg'] }}</td>
+			<td {% if player[1]['ops'] == ".---" %} data-value="-1" {% endif %}>{{ player[1]['ops'] }}</td>
 		</tr>
 		{% endfor %}
 	</tbody>
