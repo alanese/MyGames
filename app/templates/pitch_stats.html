@@ -42,7 +42,7 @@
 			<td>{{ player[1]['hr'] }}</td>
 			<td>{{ player[1]['bb'] }}</td>
 			<td>{{ player[1]['so'] }}</td>
-			<td>{{ player[1]['era'] }}</td>
+			<td {% if player[1]['era'] == '-.--' %} data-value="-1"{% endif %}>{{ player[1]['era'] }}</td>
 		</tr>
 		{% endfor %}
 	</tbody>
