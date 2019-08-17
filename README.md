@@ -3,7 +3,7 @@ A flask website which computes combined player stats for a selected list of base
 
 Currently the site only works for games with sufficient box score data available through the MLB API, which appears to be 2002-present.  
 
-The database in the repository has one registered user `admin` with password `admin`.
+The database in the repository has two registered users - `admin` with password `admin` and `user` with password `user`.
 
 ## Required packages
 - Flask
