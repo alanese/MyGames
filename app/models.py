@@ -30,6 +30,7 @@ class GameData(db.Model):
 	home_score = db.Column(db.Integer)
 	away_team = db.Column(db.String(32), index=True)
 	away_score = db.Column(db.Integer)
+	player_data_added = db.Column(db.Boolean, default=False)
 	
 	def result(self):
 		return "{} {} @ {} {}".format(self.away_team,

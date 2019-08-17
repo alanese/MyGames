@@ -151,7 +151,7 @@ def get_user_game_pks(user_id):
 
 # Adds BatGame and PitchGame records, and PlayerData where necessary,
 # for the given game_pk
-def add_game_stats(game_pk):
+def add_game_stats(game_pk, commit=True):
 	bat_stats, pitch_stats = mlbapi.get_game_batters_and_pitchers(game_pk)
 	for batter in bat_stats:
 		add_player_if_missing(batter.batter_id, commit=False)
@@ -159,4 +159,23 @@ def add_game_stats(game_pk):
 		add_player_if_missing(pitcher.pitcher_id, commit=False)
 	db.session.add_all(bat_stats)
 	db.session.add_all(pitch_stats)
-	db.session.commit()
+	if commit:
+		db.session.commit()
+
+def add_game_data_if_missing(game_data, commit=True):
+	record = GameData.query.filter_by(game_pk=game_data.game_pk).first()
+	if record is None:
+		db.session.add(game_data)
+		print("Added game {}".format(game_data.game_pk))
+		if commit:
+			db.session.commit()
+		return True
+	return False
+
+def add_all_game_data_if_missing(game_data_list, commit=True):
+	added=False
+	for game in game_data_list:
+		added = (add_game_data_if_missing(game, commit=False)) or added
+	if commit:
+		db.session.commit()
+	return added

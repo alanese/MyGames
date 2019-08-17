@@ -73,6 +73,7 @@ def game_select(year, month, day):
 		flash("No games found for {}".format(date.isoformat()))
 		return redirect(url_for('choose_date'))
 	else:
+		dbhandler.add_all_game_data_if_missing(games)
 		registered_games = dbhandler.get_user_game_pks(current_user.id)
 		games_w_reg = [ (game, game.game_pk in registered_games) for game in games]
 		return render_template('gameselect.html', games=games_w_reg)
@@ -87,16 +88,17 @@ def list_games():
 					   all()
 	return render_template('mygames.html', games=games)
 
-@app.route('/addgame/<game_pk>/<date>', methods=['GET', 'POST'])
+@app.route('/addgame/<game_pk>', methods=['GET', 'POST'])
 @login_required
-def add_game(game_pk, date):
+def add_game(game_pk):
 	game = Game(game_pk=game_pk, user_id=current_user.id)
 	check_game = GameData.query.filter_by(game_pk=game_pk).first()
 	if check_game is None:
-		game_data = mlbapi.get_game_data(game_pk, date)
-		db.session.add(game_data)
-		db.session.commit()
-		dbhandler.add_game_stats(game_pk)
+		flash("An error occurred - game {} was not added".format(game_pk))
+		return redirect(url_for('list_games'))
+	if not check_game.player_data_added:
+		dbhandler.add_game_stats(game_pk, commit=False)
+		check_game.player_data_added = True
 	db.session.add(game)
 	db.session.commit()
 	flash("Game {} successfully added".format(game_pk))

@@ -24,7 +24,7 @@
 						{% if game[1] %}
 							<span class="badge badge-secondary">Added</span>
 						{% else %}
-							<a href="{{ url_for('add_game', game_pk=game[0].game_pk, date=game[0].date) }}" class="badge badge-success">Add Game</a>
+							<a href="{{ url_for('add_game', game_pk=game[0].game_pk) }}" class="badge badge-success">Add Game</a>
 						{% endif %}
 						</td>
 						

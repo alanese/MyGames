@@ -26,7 +26,7 @@
 	<tbody>
 		{% for row in rows %}
 		<tr>
-			<td>{{ row[2]['date'] }}</td>
+			<td>{{ row[2]['date'] }} {% if row[2].dh_status %}({{row[2].dh_status}}){% endif %}</td>
 			<td>{{ row[1]['ab'] }}</td>
 			<td>{{ row[1]['r'] }}</td>
 			<td>{{ row[1]['h'] }}</td>
