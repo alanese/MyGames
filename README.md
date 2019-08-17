@@ -26,4 +26,4 @@ The database in the repository has one registered user `admin` with password `ad
 - Other stuff I think of?
 
 ## Notes
-Table sorting with [Sortable](https://github.com/HubSpot/sortable)
+Table sorting and paging with [DataTables](https://datatables.net/)

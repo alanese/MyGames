@@ -2,10 +2,12 @@
 
 {% block app_content %}
 <h1>{{ name }}</h1>
-<table class="sortable-theme-bootstrap" data-sortable>
+<table id="pitchers"
+       class="table table-striped table-bordered sort-table"
+       data-order='[[0, "asc"]]'>
 	<thead>
 		<tr>
-			<th data-sorted="true" data-sorted-direction="ascending">Date</th>
+			<th>Date</th>
 			<th>AB</th>
 			<th>R</th>
 			<th>H</th>
