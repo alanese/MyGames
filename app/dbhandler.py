@@ -130,6 +130,9 @@ def get_cum_team_records(user_id):
 		teams[name]['wpct'] = "{:.3f}".format(wpct)
 	return teams
 
+# If the PlayerData table does not have a record with the given
+# player id, construct one and add it to the table.
+# Returns True if the record was added and False if it was already there
 def add_player_if_missing(id, commit=True):
 	player_record = PlayerData.query.filter_by(id=id).first()
 	if not player_record:
@@ -145,3 +148,15 @@ def add_player_if_missing(id, commit=True):
 def get_user_game_pks(user_id):
 	games = Game.query.filter_by(user_id=user_id)
 	return [game.game_pk for game in games]
+
+# Adds BatGame and PitchGame records, and PlayerData where necessary,
+# for the given game_pk
+def add_game_stats(game_pk):
+	bat_stats, pitch_stats = mlbapi.get_game_batters_and_pitchers(game_pk)
+	for batter in bat_stats:
+		add_player_if_missing(batter.batter_id, commit=False)
+	for pitcher in pitch_stats:
+		add_player_if_missing(pitcher.pitcher_id, commit=False)
+	db.session.add_all(bat_stats)
+	db.session.add_all(pitch_stats)
+	db.session.commit()

@@ -96,7 +96,7 @@ def add_game(game_pk, date):
 		game_data = mlbapi.get_game_data(game_pk, date)
 		db.session.add(game_data)
 		db.session.commit()
-		add_game_stats_to_db(game_pk)
+		dbhandler.add_game_stats(game_pk)
 	db.session.add(game)
 	db.session.commit()
 	flash("Game {} successfully added".format(game_pk))
@@ -167,17 +167,6 @@ def viewdb():
 										  batters=BatGame.query.all(),
 										  pitchers=PitchGame.query.all(),
 										  players=PlayerData.query.all())
-
-#DON'T RUN if game stats are already in the db!
-def add_game_stats_to_db(game_pk):
-	bat_stats, pitch_stats = mlbapi.get_game_batters_and_pitchers(game_pk)
-	for batter in bat_stats:
-		dbhandler.add_player_if_missing(batter.batter_id, commit=False)
-	for pitcher in pitch_stats:
-		dbhandler.add_player_if_missing(pitcher.pitcher_id, commit=False)
-	db.session.add_all(bat_stats)
-	db.session.add_all(pitch_stats)
-	db.session.commit()
 
 #Convert an integer number of outs to a string representation of innings pitched
 def outs_to_ip(outs):
