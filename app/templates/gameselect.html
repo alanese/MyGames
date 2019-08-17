@@ -3,9 +3,28 @@
 {% block app_content %}
     <h1>Select Game</h1>
 	{% if games %}
-	{% for game in games %}
-	<div><p><a href="{{ url_for('add_game', game_pk=game.game_pk, date=game.date) }}">{{game.game_pk}}</a>: {{game.result()}}</p></div>
-	{% endfor %}
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Away Team</th>
+				<th>Away Score</th>
+				<th>Home Team</th>
+				<th>Home Score</th>
+				<th>Add Game</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for game in games %}
+				<tr>
+					<td>{{ game.away_team }}</td>
+					<td>{{ game.away_score }}</td>
+					<td>{{ game.home_team }}</td>
+					<td>{{ game.home_score }}</td>
+					<td><a href="{{ url_for('add_game', game_pk=game.game_pk, date=game.date) }}" class="badge badge-success">Add Game</a></td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 	{% else %}
 	<div><p>No games found</p></div>
 	{% endif %}
