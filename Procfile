@@ -1,0 +1,1 @@
+flask db upgrade; gunicorn flaskstuff:app
