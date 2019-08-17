@@ -140,3 +140,8 @@ def add_player_if_missing(id, commit=True):
 		return True
 	else:
 		return False
+
+# Retrieve a list of game_pk values for games the given user has registered
+def get_user_game_pks(user_id):
+	games = Game.query.filter_by(user_id=user_id)
+	return [game.game_pk for game in games]

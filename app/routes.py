@@ -73,7 +73,9 @@ def game_select(year, month, day):
 		flash("No games found for {}".format(date.isoformat()))
 		return redirect(url_for('choose_date'))
 	else:
-		return render_template('gameselect.html', games=games)
+		registered_games = dbhandler.get_user_game_pks(current_user.id)
+		games_w_reg = [ (game, game.game_pk in registered_games) for game in games]
+		return render_template('gameselect.html', games=games_w_reg)
 		
 @app.route('/mygames')
 @login_required
@@ -81,7 +83,7 @@ def list_games():
 	games = db.session.query(Game, GameData).\
 					   filter(Game.user_id==current_user.id).\
 					   filter(GameData.game_pk==Game.game_pk).\
-					   order_by(Game.game_pk).\
+					   order_by(GameData.date).\
 					   all()
 	return render_template('mygames.html', games=games)
 

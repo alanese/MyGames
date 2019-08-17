@@ -16,11 +16,18 @@
 		<tbody>
 			{% for game in games %}
 				<tr>
-					<td>{{ game.away_team }}</td>
-					<td>{{ game.away_score }}</td>
-					<td>{{ game.home_team }}</td>
-					<td>{{ game.home_score }}</td>
-					<td><a href="{{ url_for('add_game', game_pk=game.game_pk, date=game.date) }}" class="badge badge-success">Add Game</a></td>
+					<td>{{ game[0].away_team }}</td>
+					<td>{{ game[0].away_score }}</td>
+					<td>{{ game[0].home_team }}</td>
+					<td>{{ game[0].home_score }}</td>
+					<td>
+						{% if game[1] %}
+							<span class="badge badge-secondary">Added</span>
+						{% else %}
+							<a href="{{ url_for('add_game', game_pk=game[0].game_pk, date=game[0].date) }}" class="badge badge-success">Add Game</a>
+						{% endif %}
+						</td>
+						
 				</tr>
 			{% endfor %}
 		</tbody>
