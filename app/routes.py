@@ -162,6 +162,15 @@ def pitcher_games(player_id):
 				   all()
 	rows = [ (g, pg, gd, outs_to_ip(pg.outs)) for (g, pg, gd) in q ]			   
 	return render_template("pitcher.html", name=name, rows=rows)
+
+@app.route('/gamestats/<game_pk>')
+@login_required
+def game_stats(game_pk):
+	game = GameData.query.filter_by(game_pk=game_pk).first()
+	batters, pitchers = dbhandler.get_all_game_stats(game_pk)
+	#batters = sorted(batters, key=lambda x: x[1].sort_name)
+	#pitchers = sorted(pitchers, key=lambda x: x[1].sort_name)
+	return render_template("game_stats.html", game=game, batters=batters, pitchers=pitchers)
 			
 @app.route('/viewdb')	
 def viewdb():

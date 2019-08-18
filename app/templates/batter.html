@@ -26,7 +26,11 @@
 	<tbody>
 		{% for row in rows %}
 		<tr>
-			<td>{{ row[2]['date'] }} {% if row[2].dh_status %}({{row[2].dh_status}}){% endif %}</td>
+			<td>
+				<a href="{{ url_for('game_stats', game_pk=row[2].game_pk) }}">
+					{{ row[2].date_with_dh() }}
+				</a>
+			</td>
 			<td>{{ row[1]['ab'] }}</td>
 			<td>{{ row[1]['r'] }}</td>
 			<td>{{ row[1]['h'] }}</td>

@@ -32,6 +32,12 @@ class GameData(db.Model):
 	away_score = db.Column(db.Integer)
 	player_data_added = db.Column(db.Boolean, default=False)
 	
+	def date_with_dh(self):
+		if not self.dh_status:
+			return self.date
+		else:
+			return "{} ({})".format(self.date, self.dh_status)
+			
 	def result(self):
 		return "{} {} @ {} {}".format(self.away_team,
 									  self.away_score,
@@ -77,6 +83,21 @@ class PitchGame(db.Model):
 	bb = db.Column(db.Integer)
 	so = db.Column(db.Integer)
 	outs = db.Column(db.Integer)
+
+	def get_decision(self):
+		if self.w > 0:
+			return "W"
+		elif self.losses > 0:
+			return "L"
+		elif self.sv > 0:
+			return "S"
+		else:
+			return ""
+
+	def get_innings_pitched(self):
+		whole = str(int(self.outs / 3))
+		part = str(self.outs % 3)
+		return whole + "." + part
 	
 
 @login.user_loader

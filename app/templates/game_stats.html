@@ -1,0 +1,91 @@
+{% extends "sort_table.html" %}
+
+{% block app_content %}
+<h1>{{ game.date_with_dh() }}: {{ game.result() }}</h1>
+<h2>Batters</h2>
+<table id="batters"
+	   class="table table-sm table-striped table-bordered table-hover sort-table"
+	   data-order='[[0, "asc"]]'>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>AB</th>
+			<th>R</th>
+			<th>H</th>
+			<th>2B</th>
+			<th>3B</th>
+			<th>HR</th>
+			<th>RBI</th>
+			<th>SB</th>
+			<th>CS</th>
+			<th>SO</th>
+			<th>BB</th>
+			<th>HBP</th>
+			<th>SF</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for batter in batters %}
+		<tr>
+			<td data-order="{{ batter[1].sort_name }}">
+				<a href="{{ url_for('batter_games', player_id=batter[1].id) }}">
+					{{ batter[1].name }}
+				</a>
+			</td>
+			<td>{{ batter[0].ab }}</td>
+			<td>{{ batter[0].r }}</td>
+			<td>{{ batter[0].h }}</td>
+			<td>{{ batter[0].doubles }}</td>
+			<td>{{ batter[0].triples }}</td>
+			<td>{{ batter[0].hr }}</td>
+			<td>{{ batter[0].rbi }}</td>
+			<td>{{ batter[0].sb }}</td>
+			<td>{{ batter[0].cs }}</td>
+			<td>{{ batter[0].k }}</td>
+			<td>{{ batter[0].bb }}</td>
+			<td>{{ batter[0].hbp }}</td>
+			<td>{{ batter[0].sf }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+<h2>Pitchers</h2>
+<table id="pitchers"
+	   class="table table-sm table-striped table-bordered table-hover sort-table"
+	   data-order='[[0, "asc"]]'>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Decision</th>
+			<th>IP</th>
+			<th>H</th>
+			<th>R</th>
+			<th>ER</th>
+			<th>HR</th>
+			<th>BB</th>
+			<th>SO</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for pitcher in pitchers %}
+		<tr>
+			<td data-order="{{ pitcher[1].sort_name }}">
+				<a href="{{ url_for('pitcher_games', player_id=pitcher[1].id) }}">
+					{{ pitcher[1].name }}
+				</a>
+			</td>
+			<td>{{ pitcher[0].get_decision() }}</td>
+			<td>{{ pitcher[0].get_innings_pitched() }}</td>
+			<td>{{ pitcher[0].h }}</td>
+			<td>{{ pitcher[0].r }}</td>
+			<td>{{ pitcher[0].er }}</td>
+			<td>{{ pitcher[0].hr }}</td>
+			<td>{{ pitcher[0].bb }}</td>
+			<td>{{ pitcher[0].so }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock app_content %}
+

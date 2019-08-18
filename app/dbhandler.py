@@ -179,3 +179,22 @@ def add_all_game_data_if_missing(game_data_list, commit=True):
 	if commit:
 		db.session.commit()
 	return added
+
+def get_all_game_stats(game_pk):
+	b = get_batter_game_stats(game_pk)
+	p = get_pitcher_game_stats(game_pk)
+	return (b, p)
+
+def get_batter_game_stats(game_pk):
+	stats = db.session.query(BatGame, PlayerData).\
+					   filter(BatGame.game_pk==game_pk).\
+					   filter(BatGame.batter_id==PlayerData.id).\
+					   all()
+	return stats
+
+def get_pitcher_game_stats(game_pk):
+	stats = db.session.query(PitchGame, PlayerData).\
+					   filter(PitchGame.game_pk==game_pk).\
+					   filter(PitchGame.pitcher_id==PlayerData.id).\
+					   all()
+	return stats

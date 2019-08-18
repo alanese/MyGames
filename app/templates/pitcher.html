@@ -8,11 +8,9 @@
 	<thead>
 		<tr>
 			<th>Date</th>
-			<th>W</th>
-			<th>L</th>
+			<th>Decision</th>
 			<th>GS</th>
 			<th>GF</th>
-			<th>SV</th>
 			<th>IP</th>
 			<th>H</th>
 			<th>R</th>
@@ -25,13 +23,15 @@
 	<tbody>
 		{% for row in rows %}
 		<tr>
-			<td>{{ row[2]['date'] }} {% if row[2].dh_status %}({{row[2].dh_status}}){% endif %}</td>
-			<td>{{ row[1]['w'] }}</td>
-			<td>{{ row[1]['losses'] }}</td>
+			<td>
+				<a href="{{ url_for('game_stats', game_pk=row[2].game_pk) }}">
+					{{ row[2].date_with_dh() }}
+				</a>
+			</td>
+			<td>{{ row[1].get_decision() }}</td>
 			<td>{{ row[1]['gs'] }}</td>
 			<td>{{ row[1]['gf'] }}</td>
-			<td>{{ row[1]['sv'] }}</td>
-			<td>{{ row[3] }}</td>
+			<td>{{ row[1].get_innings_pitched() }}</td>
 			<td>{{ row[1]['h'] }}</td>
 			<td>{{ row[1]['r'] }}</td>
 			<td>{{ row[1]['er'] }}</td>
