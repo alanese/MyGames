@@ -67,6 +67,9 @@ def choose_date():
 @app.route('/gameselect/<year>/<month>/<day>', methods=['GET', 'POST'])
 @login_required
 def game_select(year, month, day):
+	if int(year) < 2002:
+		flash("Games before 2002 are not currently supported")
+		return redirect(url_for('choose_date'))
 	date = dt.date(int(year), int(month), int(day))
 	games = mlbapi.get_schedule(date)
 	if len(games) == 0:

@@ -30,3 +30,7 @@ class RegistrationForm(FlaskForm):
 class DateForm(FlaskForm):
 	dt = DateField('DatePicker', format='%Y-%m-%d')
 	submit = SubmitField('Submit')
+
+	def validate_dt(self, dt):
+		if dt.data.year < 2002:
+			raise ValidationError('Dates before 2002 are not currently supported')
