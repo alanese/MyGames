@@ -128,7 +128,8 @@ def get_schedule(d):
 						 home_score=game['teams']['home']['score'],
 						 away_team=game['teams']['away']['team']['name'],
 						 away_score=game['teams']['away']['score'],
-						 dh_status=dh_status
+						 dh_status=dh_status,
+						 venue=game['venue']['name']
 						 )
 			games.append(g)
 	return games
@@ -151,9 +152,9 @@ def get_player(id):
 		return player
 		
 # Queries the MLB API and returns a GameData object for the given
-# game_pk and date
+# game_pk, date, and optionally venue (defaults to home team's home field)
 # Optionally uses the given request object
-def get_game_data(game_pk, date, r=None):
+def get_game_data(game_pk, date, venue=None, r=None):
 	if not r:
 		request_url = BOX_URL.format(game_pk)
 		r = requests.get(request_url)
@@ -162,10 +163,13 @@ def get_game_data(game_pk, date, r=None):
 	r_json = r.json()
 	if ('teams' not in r_json):
 		return None
+	if not venue:
+		venue = r_json['teams']['home']['team']['venue']['name']
 	gd = GameData(game_pk=game_pk,
 				  date=date,
 				  home_team=r_json['teams']['home']['team']['name'],
 				  home_score=r_json['teams']['home']['teamStats']['batting']['runs'],
 				  away_team=r_json['teams']['away']['team']['name'],
-				  away_score=r_json['teams']['away']['teamStats']['batting']['runs'])
+				  away_score=r_json['teams']['away']['teamStats']['batting']['runs'],
+				  venue=venue)
 	return gd

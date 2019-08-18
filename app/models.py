@@ -30,6 +30,7 @@ class GameData(db.Model):
 	home_score = db.Column(db.Integer)
 	away_team = db.Column(db.String(32), index=True)
 	away_score = db.Column(db.Integer)
+	venue = db.Column(db.String(64), index=True)
 	player_data_added = db.Column(db.Boolean, default=False)
 	
 	def date_with_dh(self):
@@ -37,7 +38,7 @@ class GameData(db.Model):
 			return self.date
 		else:
 			return "{} ({})".format(self.date, self.dh_status)
-			
+
 	def result(self):
 		return "{} {} @ {} {}".format(self.away_team,
 									  self.away_score,
