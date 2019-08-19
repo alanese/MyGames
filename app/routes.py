@@ -1,4 +1,5 @@
 from flask import render_template, flash, redirect, request, url_for
+from flask import jsonify
 from flask_login import current_user, login_user, logout_user
 from flask_login import login_required
 from werkzeug.urls import url_parse
@@ -124,6 +125,12 @@ def batter_stats():
 	batters = dbhandler.get_cum_batter_stats(current_user.id)
 	players = sorted(batters.items(), key=lambda x: x[1]['sortname'])
 	return render_template('bat_stats.html', players=players)
+
+@app.route('/json/batters')
+@login_required
+def batter_stats_json():
+	batters = dbhandler.get_cum_batter_stats(current_user.id)
+	return jsonify(batters)
 	
 @app.route('/pitcherstats')
 @login_required
@@ -131,6 +138,12 @@ def pitcher_stats():
 	pitchers = dbhandler.get_cum_pitcher_stats(current_user.id)
 	players = sorted(pitchers.items(), key=lambda x: x[1]['sortname'])
 	return render_template("pitch_stats.html", players=players)
+
+@app.route('/json/pitchers')
+@login_required
+def pitcher_stats_json():
+	pitchers = dbhandler.get_cum_pitcher_stats(current_user.id)
+	return jsonify(pitchers)
 	
 @app.route('/teamrecords')
 @login_required
