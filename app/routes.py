@@ -2,6 +2,7 @@ from flask import render_template, flash, redirect, request, url_for
 from flask import jsonify
 from flask_login import current_user, login_user, logout_user
 from flask_login import login_required
+from flask_csv import send_csv
 from werkzeug.urls import url_parse
 from app import app, db
 from app.forms import LoginForm, DateForm, RegistrationForm
@@ -131,6 +132,16 @@ def batter_stats():
 def batter_stats_json():
 	batters = dbhandler.get_cum_batter_stats(current_user.id)
 	return jsonify(batters)
+
+
+batter_stats_list = ['name', 'sortname', 'g', 'ab', 'r', 'h',
+					 '2b', '3b', 'hr', 'rbi', 'sb', 'cs', 'k',
+					 'bb', 'hbp', 'sf', 'ba', 'obp', 'slg', 'ops']
+@app.route('/csv/batters')
+@login_required
+def batter_stats_csv():
+	batters = dbhandler.get_cum_batter_stats(current_user.id)
+	return send_csv(batters.values(), "data.csv", batter_stats_list)
 	
 @app.route('/pitcherstats')
 @login_required
@@ -144,6 +155,15 @@ def pitcher_stats():
 def pitcher_stats_json():
 	pitchers = dbhandler.get_cum_pitcher_stats(current_user.id)
 	return jsonify(pitchers)
+
+pitcher_stats_list = ['name', 'sortname', 'w', 'losses', 'g', 'gs',
+					  'gf', 'sv', 'outs', 'h', 'r', 'er', 'hr', 'bb',
+					  'so', 'ip', 'era']
+@app.route('/csv/pitchers')
+@login_required
+def pitcher_stats_csv():
+	pitchers = dbhandler.get_cum_pitcher_stats(current_user.id)
+	return send_csv(pitchers.values(), "data.csv", pitcher_stats_list)
 	
 @app.route('/teamrecords')
 @login_required
