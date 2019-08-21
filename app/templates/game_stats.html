@@ -2,6 +2,9 @@
 
 {% block app_content %}
 <h1>{{ game.date_with_dh() }}: {{ game.result() }}</h1>
+<span id="box-links">
+	<a href="https://www.mlb.com/gameday/{{ game.game_pk }}">On MLB.com</a>
+</span>
 <h2>Batters</h2>
 <table id="batters"
 	   class="table table-sm table-striped table-bordered table-hover sort-table"
