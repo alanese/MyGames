@@ -7,6 +7,7 @@ class User(UserMixin, db.Model):
 	username = db.Column(db.String(64), index=True, unique=True)
 	email = db.Column(db.String(128), index=True, unique=True)
 	password_hash = db.Column(db.String(128))
+	user_games = db.relationship('Game', backref='user', lazy='dynamic')
 	
 	def __repr__(self):
 		return '<User {}>'.format(self.username)
@@ -32,6 +33,9 @@ class GameData(db.Model):
 	away_score = db.Column(db.Integer)
 	venue = db.Column(db.String(64), index=True)
 	player_data_added = db.Column(db.Boolean, default=False)
+	user_games = db.relationship('Game', backref='game', lazy='dynamic')
+	batters = db.relationship('BatGame', backref='game', lazy='dynamic')
+	pitchers = db.relationship('PitchGame', backref='game', lazy='dynamic')
 	
 	def date_with_dh(self):
 		if not self.dh_status:
@@ -49,6 +53,8 @@ class PlayerData(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(64), index=True)
 	sort_name = db.Column(db.String(64), index=True)
+	bat_games = db.relationship('BatGame', backref='player', lazy='dynamic')
+	pitch_games = db.relationship('PitchGame', backref='player', lazy='dynamic')
 	
 class BatGame(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
