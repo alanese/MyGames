@@ -154,9 +154,9 @@ def get_user_game_pks(user_id):
 def add_game_stats(game_pk, commit=True):
 	bat_stats, pitch_stats = mlbapi.get_game_batters_and_pitchers(game_pk)
 	for batter in bat_stats:
-		add_player_if_missing(batter.batter_id, commit=False)
+		add_player_if_missing(batter.batter_id)
 	for pitcher in pitch_stats:
-		add_player_if_missing(pitcher.pitcher_id, commit=False)
+		add_player_if_missing(pitcher.pitcher_id)
 	db.session.add_all(bat_stats)
 	db.session.add_all(pitch_stats)
 	if commit:
