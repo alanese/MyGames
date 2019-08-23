@@ -13,6 +13,7 @@
 			<th>W%</th>
 			<th>RS</th>
 			<th>RA</th>
+			<th>Run Diff</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -24,6 +25,7 @@
 			<td>{{ team['wpct'] }}</td>
 			<td>{{ team['rs'] }}</td>
 			<td>{{ team['ra'] }}</td>
+			<td>{{ team ['rs'] - team['ra'] }}
 		</tr>
 		{% endfor %}
 	</tbody>

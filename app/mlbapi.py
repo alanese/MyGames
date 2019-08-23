@@ -118,7 +118,7 @@ def get_schedule(d):
 		return None
 	for game in r['dates'][0]['games']:
 		if game['status']['codedGameState'] == 'F':
-			if game['doubleHeader'] == 'Y':
+			if game['doubleHeader'] == 'Y' or game['doubleheader'] == 'S':
 				dh_status = game['gameNumber']
 			else:
 				dh_status = 0
