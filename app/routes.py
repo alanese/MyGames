@@ -9,6 +9,7 @@ from app.forms import LoginForm, DateForm, RegistrationForm
 from app.models import User, Game, GameData, PlayerData, BatGame, PitchGame
 import app.mlbapi as mlbapi
 import app.dbhandler as dbhandler
+import app.util as util
 from collections import defaultdict
 import datetime as dt
 
@@ -204,9 +205,11 @@ def pitcher_games(player_id):
 def game_stats(game_pk):
 	game = GameData.query.filter_by(game_pk=game_pk).first()
 	batters, pitchers = dbhandler.get_all_game_stats(game_pk)
-	#batters = sorted(batters, key=lambda x: x[1].sort_name)
-	#pitchers = sorted(pitchers, key=lambda x: x[1].sort_name)
-	return render_template("game_stats.html", game=game, batters=batters, pitchers=pitchers)
+	return render_template("game_stats.html", game=game,
+											  batters=batters,
+											  pitchers=pitchers,
+											  bbref_url=util.get_bbref_url(game),
+											  mlb_url=util.get_mlb_url(game))
 			
 @app.route('/viewdb')	
 def viewdb():
