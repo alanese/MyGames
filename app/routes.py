@@ -184,7 +184,9 @@ def batter_games(player_id):
 				   filter(BatGame.batter_id==player_id).\
 				   order_by(GameData.date).\
 				   all()
-	return render_template("batter.html", name=name, rows=q)
+	return render_template("batter.html", name=name,
+										  rows=q,
+										  mlb_url=util.get_mlb_player_url(player_id))
 	
 @app.route('/pitcher/<player_id>')
 @login_required
@@ -198,7 +200,9 @@ def pitcher_games(player_id):
 				   order_by(GameData.date).\
 				   all()
 	rows = [ (g, pg, gd, outs_to_ip(pg.outs)) for (g, pg, gd) in q ]			   
-	return render_template("pitcher.html", name=name, rows=rows)
+	return render_template("pitcher.html", name=name,
+										   rows=rows,
+										   mlb_url=util.get_mlb_player_url(player_id))
 
 @app.route('/gamestats/<game_pk>')
 @login_required

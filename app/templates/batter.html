@@ -2,7 +2,10 @@
 
 {% block app_content %}
 <h1>{{ name }}</h1>
-<table id="pitchers"
+<span id="links">
+	<a href="{{ mlb_url }}">On MLB.com</a>
+</span>
+<table id="games"
        class="table table-sm table-striped table-bordered table-hover sort-table"
        data-order='[[0, "asc"]]'>
 	<thead>

@@ -13,7 +13,7 @@ team_abbrevs = {"Anaheim Angels": "ANA",
 				"Detroit Tigers": "DET",
 				"Florida Marlins": "FLA",
 				"Houston Astros": "HOU",
-				"Kansas City Royals": "KCR",
+				"Kansas City Royals": "KCA",
 				"Los Angeles Angels": "LAA",
 				"Los Angeles Angels of Anaheim": "LAA",
 				"Miami Marlins": "MIA",
@@ -47,8 +47,13 @@ def get_bbref_url(game):
 		dh_status = game.dh_status
 	return BBREF_URL_BASE.format(team_abbrev, team_abbrev, date, dh_status)
 
-MLB_URL_BASE = "https://www.mlb.com/gameday/{}"
+MLB_GAME_URL_BASE = "https://www.mlb.com/gameday/{}"
 # Takes a GameData object as argument
 # Returns the mlb.com URL for the game's box score
 def get_mlb_url(game):
-	return MLB_URL_BASE.format(game.game_pk)
+	return MLB_GAME_URL_BASE.format(game.game_pk)
+
+MLB_PLAYER_URL_BASE = "https://www.mlb.com/player/{}"
+def get_mlb_player_url(player_id):
+	return MLB_PLAYER_URL_BASE.format(player_id)
+
