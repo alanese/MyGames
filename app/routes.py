@@ -136,7 +136,7 @@ def batter_stats_json():
 
 
 batter_stats_list = ['name', 'sortname', 'g', 'ab', 'r', 'h',
-					 '2b', '3b', 'hr', 'rbi', 'sb', 'cs', 'k',
+					 '2b', '3b', 'hr', 'tb', 'rbi', 'sb', 'cs', 'k',
 					 'bb', 'hbp', 'sf', 'ba', 'obp', 'slg', 'ops']
 @app.route('/csv/batters')
 @login_required

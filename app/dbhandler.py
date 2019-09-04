@@ -27,13 +27,14 @@ def get_cum_batter_stats(user_id):
 			batters[id]['sf'] = batters[id]['sf'] + game.sf
 
 	for id in batters.keys():
+		batters[id]['tb'] = batters[id]['h'] + batters[id]['2b'] + 2 * batters[id]['3b'] + 3 * batters[id]['hr']
 		if batters[id]['ab'] == 0:
 			batters[id]['ba'] = '.---'
 			batters[id]['slg'] = '.---'
 			slg = None
 		else:
 			ba = batters[id]['h'] / batters[id]['ab']
-			slg = (batters[id]['h'] + batters[id]['2b'] + 2 * batters[id]['3b'] + 3 * batters[id]['hr']) / batters[id]['ab']
+			slg = batters[id]['tb'] / batters[id]['ab']
 			batters[id]['ba'] = '{:.3f}'.format(ba)
 			batters[id]['slg'] = '{:.3f}'.format(slg)
 		
