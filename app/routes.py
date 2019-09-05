@@ -75,7 +75,7 @@ def game_select(year, month, day):
 		return redirect(url_for('choose_date'))
 	date = dt.date(int(year), int(month), int(day))
 	games = mlbapi.get_schedule(date)
-	if len(games) == 0:
+	if (games is None) or len(games) == 0:
 		flash("No games found for {}".format(date.isoformat()))
 		return redirect(url_for('choose_date'))
 	else:
